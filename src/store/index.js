@@ -16,7 +16,7 @@ export default new Vuex.Store({
     addCar(state, car){
       state.cars.push(car)
     },
-    set_token: (state, token) => {
+    setToken: (state, token) => {
       state.token = token;
       localStorage.token = token;
     },
@@ -31,14 +31,14 @@ export default new Vuex.Store({
   },
 
   actions: {
-    fetchCars({commit}){
-      fetch('http://127.0.0.1:8000/admin/cars/')
+    fetchCars({commit, state}){
+      fetch('http://127.0.0.1:8000/admin/cars/', { method: 'get', headers: { 'Authorization': state.token } })
         .then( obj => obj.json() )
         .then( res => commit('setCars', res.cars));
 
     },
     register({ commit }, obj) {
-      fetch('/api_register', {
+      fetch('/http://127.0.0.1:9000/api_register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
@@ -47,7 +47,7 @@ export default new Vuex.Store({
     },
 
     login({ commit }, obj) {
-      fetch('/api_login', {
+      fetch('http://127.0.0.1:9000/api_login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)

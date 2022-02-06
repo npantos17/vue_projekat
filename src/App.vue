@@ -19,7 +19,9 @@
               </b-dropdown-item>
             </b-nav-item-dropdown> -->
           </b-navbar-nav>
-
+          <b-navbar-nav>
+            <b-nav-item to="/cars">Cars</b-nav-item>
+          </b-navbar-nav> 
           <b-navbar-nav class="ml-auto">
             <b-nav-item v-if="!token" to="/register">Register</b-nav-item>
             <b-nav-item v-if="!token" to="/login">Log In</b-nav-item>
@@ -37,6 +39,66 @@
     <router-view class="stranica" />
   </div>
 </template>
+
+
+<script>
+import { mapActions, mapState, mapMutations } from 'vuex';
+
+export default {
+    name: 'App',
+
+    data() {
+      return {
+        searchQuery: ''
+      }
+    },
+
+    computed: {
+      ...mapState([
+        'token'
+      ])
+    },
+
+    mounted() {
+      
+      if (localStorage.token) {
+        this.setToken(localStorage.token);
+      }
+    },
+
+    methods: {
+      ...mapActions([
+        
+      ]),
+
+      ...mapMutations([
+        'removeToken',
+        'setToken'
+      ]),
+
+      // search(e) {
+      //   e.preventDefault();
+
+      //   const sq = this.searchQuery;
+      //   this.searchQuery = '';
+        
+      //   this.$router.push({ name: 'Search', query: { q: sq } });
+      // },
+
+      logout() {
+        this.removeToken();
+      }
+    },
+
+    sockets: {
+      error(err) {
+        alert(err);
+      }
+    }
+  }
+</script>
+
+
 
 <style>
 #app {

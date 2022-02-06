@@ -21,31 +21,35 @@
     data() {
         return {
             subtitle: '',
-            depID: null
         }
     },
 
-    watch: {
-      $route() {
-        this.subtitle = this.$route.params.name;
-        this.depID = this.$route.params.id;
+    
 
-        this.fetchIDsByDepartment(this.depID);
-      }
+    // watch: {
+    //   $route() {
+    //     this.subtitle = this.$route.params.name;
+    //     this.depID = this.$route.params.id;
+
+    //     this.fetchIDsByDepartment(this.depID);
+    //   }
+    // },
+
+    methods: {
+       ...mapActions([
+         'fetchCars'
+       ])
     },
 
     mounted() {
-        this.subtitle = this.$route.params.name;
-        this.depID = this.$route.params.id;
+        // this.subtitle = this.$route.params.name;
+        // this.depID = this.$route.params.id;
 
-        this.fetchIDsByDepartment(this.depID);
+        this.fetchCars();
+        
     },
 
-    methods: {
-      ...mapActions([
-        'fetchIDsByDepartment'
-      ])
-    }
+    
   }
 </script>
 
