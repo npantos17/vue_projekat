@@ -12,11 +12,12 @@ export default new Vuex.Store({
     orders: [],
     orders: null,
     token: '',
+    loggedUserId: ''
     // user: {}
   },
   mutations: {
     setCars(state, cars){
-      this.cars = cars
+      state.cars = cars
     },
     addCar(state, car){
       state.cars.push(car)
@@ -25,6 +26,9 @@ export default new Vuex.Store({
       state.token = token;
       localStorage.token = token;
     },
+    setLoggedUserId(state, userId){
+      state.loggedUserId = userId;
+    },
     // set_user: (state, user) => {
     //   state.user = user;
     //   console.log(state.user);
@@ -32,12 +36,26 @@ export default new Vuex.Store({
     removeToken(state) {
       state.token = '';
       localStorage.token = '';
+    },
+    setSellers(state, sellers) {
+      state.sellers = sellers;
+    },
+
+    setOrders(state, orders) {
+      state.orders = orders;
+    },
+    setSelectedCar(state, car){
+      state.car = car;
+    },
+    setSeller(state, seller){
+      state.seller = seller
     }
+
   },
 
   actions: {
     fetchCars({commit, state}){
-      fetch('http://127.0.0.1:8000/admin/cars/', { method: 'get', headers: { 'Authorization': state.token } })
+      fetch('http://127.0.0.1:8500/admin/cars/all', { method: 'get', headers: { 'Authorization': state.token } })
         .then( obj => obj.json() )
         .then( res => commit('setCars', res.cars));
 
@@ -48,7 +66,15 @@ export default new Vuex.Store({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
       }).then( res => res.json() )
-        .then( tkn => commit('setToken', tkn.token) );
+        .then( tkn => {
+          // commit('setToken', tkn.token)
+          if (tkn.msg) {
+            alert(tkn.msg);
+          } else {
+            // console.log(tkn.token)
+            commit('setToken', tkn.token)
+          }
+        });
     },
 
     login({ commit }, obj) {
@@ -62,6 +88,7 @@ export default new Vuex.Store({
           alert(tkn.msg);
         } else {
           commit('setToken', tkn.token)
+          commit('setLoggedUserId', tkn.userId)
         }
       });
     },
