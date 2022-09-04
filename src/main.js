@@ -11,6 +11,15 @@ import store from './store';
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
+// Vue.use(new VueSocketIO({
+//   debug: false,
+//   connection: 'ws://127.0.0.1:8000',
+//   vuex: {
+//       store,
+//       actionPrefix: 'socket_',
+//   }
+// }));
+
 Vue.config.productionTip = false
 
 new Vue({

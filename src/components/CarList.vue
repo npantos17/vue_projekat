@@ -2,12 +2,12 @@
   <div>
     <b-pagination
       v-model="currentPage"
-      :total-rows="imageIDs.length"
+      :total-rows="cars.length"
       :per-page="perPage"
-      aria-controls="image-table"
+      aria-controls="cars-table"
     ></b-pagination>
     <b-table
-      id="image-table"
+      id="cars-table"
       hover
       fixed
       :items="items"
@@ -15,7 +15,7 @@
       small
       :per-page="perPage"
       :current-page="currentPage"
-      @row-clicked="rowClicked"
+      
     >
       <template #cell(isHighlight)="data">
         <b-icon v-if="data.value" icon="check-square" variant="success" scale="2"></b-icon>
@@ -24,9 +24,9 @@
     </b-table>
     <b-pagination
       v-model="currentPage"
-      :total-rows="imageIDs.length"
+      :total-rows="cars.length"
       :per-page="perPage"
-      aria-controls="image-table"
+      aria-controls="cars-table"
     ></b-pagination>
   </div>
 </template>
@@ -36,11 +36,11 @@
   import { mapActions, mapState } from 'vuex';
 
   export default {
-    name: 'ImageList',
+    name: 'CarList',
 
     data() {
       return {
-        fields: ['title', 'artistDisplayName', 'objectDate', { key: 'isHighlight', tdClass: 'align-middle' }],
+        fields: ['id', 'sellerId', 'model', 'brand', 'year', 'price',{ key: 'id', tdClass: 'align-middle' }],
         items: [],
         currentPage: 1,
         perPage: 10
@@ -49,13 +49,13 @@
 
     computed: {
       ...mapState([
-        'imageIDs'
+        'cars'
       ])
     },
 
     watch: {
       currentPage(nVal, oVal) {
-        this.imageIDs.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
+        this.cars.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
           this.getItem(id).then( obj => this.items.push(obj) );
         });
       },
@@ -71,7 +71,7 @@
     },
 
     mounted() {
-      this.imageIDs.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
+      this.cars.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
         this.getItem(id).then( obj => this.items.push(obj) );
       });
     },
@@ -81,9 +81,9 @@
         'getItem'
       ]),
 
-      rowClicked(record, index) {
-        this.$router.push({ name: 'Single', params: { id: record.objectID } });
-      }
+    //   rowClicked(record, index) {
+    //     this.$router.push({ name: 'Single', params: { id: record.objectID } });
+    //   }
     }
   }
 
