@@ -2,7 +2,7 @@
   <div>
     <b-pagination
       v-model="currentPage"
-      :total-rows="cars.length"
+      :total-rows="sellers.length"
       :per-page="perPage"
       aria-controls="image-table"
     ></b-pagination>
@@ -10,7 +10,7 @@
       id="image-table"
       hover
       fixed
-      :items="cars"
+      :items="sellers"
       :fields="fields"
       small
       :per-page="perPage"
@@ -18,45 +18,23 @@
       @row-clicked="rowClicked"
       
     >
+      <!-- <template #cell(isHighlight)="data">
+        <b-icon v-if="data.value" icon="check-square" variant="success" scale="2"></b-icon>
+        <b-icon v-else icon="x-circle" variant="danger" scale="2"></b-icon>
+      </template> -->
       <template v-slot:cell(delete)="data">
 					<span><b-btn class="btn-danger" @click="deleteSeller(data.item.id)">Delete</b-btn></span>
 				</template>
     </b-table>
     <b-pagination
       v-model="currentPage"
-      :total-rows="cars.length"
+      :total-rows="sellers.length"
       :per-page="perPage"
       aria-controls="image-table"
     ></b-pagination>
-    <b-button v-if="token" v-on:click="goToAddCar()">Create listing</b-button>
+    <b-button v-if="token" v-on:click="goToAddSeller()">Add seller</b-button>
   </div>
-  <!-- <div>
-    <div class="center " v-for="car in cars"
-         :key="car.id"
-          >
-      <b-card no-body class="overflow-hidden " style="max-width: 540px; height: 350px">
-        <b-row no-gutters>
-          <a :href="`/car/${car.id}`" class="stretched-link"></a>
-          <b-col md="6">
-            <b-card-body :title="car.brand">
-              <b-card-text>
-                {{ car.model }}
-              </b-card-text>
-              <b-card-text>
-                {{ car.price }} price
-              </b-card-text>
-            </b-card-body>
-          </b-col>
-        </b-row>
-      </b-card>
-
-      <div v-if="token">
-        <b-button @click="addToCart(product)">Add to cart</b-button>
-      </div>
-      
-      <br>
-    </div>
-  </div> -->
+  
 </template>
 
 <script>
@@ -64,12 +42,11 @@
   import { mapActions, mapState } from 'vuex';
 
   export default {
-    name: 'CarList',
+    name: 'SellerList',
 
     data() {
       return {
-        fields: ['id', 'sellerId', 'model', 'brand', 'year', 'price', 'delete', { key: 'id', tdClass: 'align-middle' }],
-        // cars: [],
+        fields: ['id', 'name', 'email', 'address', 'rating', 'delete', { key: 'id', tdClass: 'align-middle' }],
         currentPage: 1,
         perPage: 10
       }
@@ -77,20 +54,15 @@
 
     computed: {
       ...mapState([
-        'cars',
+        'sellers',
         'token'
       ]),
-      filteredCars: function (){
-        let sb = []
-        console.log()
-        return this.cars.filter(book => book.SellerId == this.$route.params.id);
-
-      }
+     
     },
 
     watch: {
       currentPage(nVal, oVal) {
-        this.cars.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
+        this.sellers.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
           this.getItem(id).then( obj => this.items.push(obj) );
         });
       },
@@ -114,24 +86,28 @@
     methods: {
       ...mapActions([
         // 'getItem'
-        'fetchCars',
-        'deleteCar'
+        'fetchSellers',
+        'deleteSeller'
       ]),
 
       rowClicked(record, index) {
-        this.$router.push({ name: 'SingleCarView', params: { id: record.id} });
+        this.$router.push({ name: 'SingleSellerView', params: { id: record.id} });
       },
-      goToAddCar(){
-        this.$router.push({ name: 'AddCar', params: { id: this.$route.params.id} });
-      }
+      goToAddSeller(){
+        this.$router.push({ name: 'AddSeller', params: { id: this.$route.params.id} });
+      },
+    //   deleteSeller(id){
+    //     this.deleteSeller(id)
+    //   }
+
 
     //   rowClicked(record, index) {
     //     this.$router.push({ name: 'Single', params: { id: record.objectID } });
     //   }
     },
     mounted() {
-        this.fetchCars();     
-        this.cars.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
+        this.fetchSellers();     
+        this.sellers.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
         this.getItem(id).then( obj => this.items.push(obj) );
       });
     },

@@ -21,8 +21,11 @@
           </b-navbar-nav>
           <b-navbar-nav>
             <b-nav-item to="/cars">Cars</b-nav-item>
+            <b-nav-item to="/sellers">Sellers</b-nav-item>
+            <b-nav-item to="/users">Users</b-nav-item>
           </b-navbar-nav> 
           <b-navbar-nav class="ml-auto">
+  
             <b-nav-item v-if="!token" to="/register">Register</b-nav-item>
             <b-nav-item v-if="!token" to="/login">Log In</b-nav-item>
             <b-nav-item v-else @click="logout()">Log Out</b-nav-item>

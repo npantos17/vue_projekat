@@ -5,7 +5,11 @@ import Cars from '../views/Cars.vue';
 import Register from '@/views/Register.vue';
 import Login from '@/views/Login.vue';
 import SingleCarView from '@/views/SingleCarView';
+import SingleSellerView from '@/views/SingleSellerView';
 import AddCar from '@/views/AddCar';
+import UpdateCar from '@/views/UpdateCar';
+import Users from '@/views/Users';
+import Sellers from '@/views/Sellers';
 
 
 Vue.use(VueRouter)
@@ -45,10 +49,31 @@ const routes = [
     component: SingleCarView
   },
   {
+    path: '/sellers/:id',
+    name: 'SingleSellerView',
+    component: SingleSellerView
+  },
+  {
     path: '/addCar/:id', //ovo je id biblioteke, jer mi treba kako bi filtrirao
     name: 'AddCar',
     component: AddCar
   },
+  {
+    path: '/updateCar',
+    name: 'UpdateCar',
+    component: UpdateCar
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: Users
+  },
+  {
+    path: '/sellers',
+    name: 'Sellers',
+    component: Sellers
+  },
+  
   
 ]
 
