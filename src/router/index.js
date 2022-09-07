@@ -4,6 +4,9 @@ import Home from '../views/Home.vue'
 import Cars from '../views/Cars.vue';
 import Register from '@/views/Register.vue';
 import Login from '@/views/Login.vue';
+import SingleCarView from '@/views/SingleCarView';
+import AddCar from '@/views/AddCar';
+
 
 Vue.use(VueRouter)
 
@@ -35,7 +38,17 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  }
+  },
+  {
+    path: '/cars/:id',
+    name: 'SingleCarView',
+    component: SingleCarView
+  },
+  {
+    path: '/addCar/:id', //ovo je id biblioteke, jer mi treba kako bi filtrirao
+    name: 'AddCar',
+    component: AddCar
+  },
   
 ]
 

@@ -12,10 +12,32 @@ export default new Vuex.Store({
     orders: [],
     orders: null,
     token: '',
-    loggedUserId: ''
+    loggedUserId: '',
+    carInfo: {
+      id: '',
+      SellerId: '',
+      brand: '',
+      model: '',
+      year: '',
+      price: '',
+      OrderId: '',
+      
+    }
     // user: {}
   },
   mutations: {
+    setCarInfo(state, car){
+      state.carInfo.id= car.id,
+      state.carInfo.SellerId= car.SellerId,
+      state.carInfo.brand= car.brand,
+      state.carInfo.model= car.model,
+      state.carInfo.year= car.year,
+      state.carInfo.price= car.price,
+      state.carInfo.OrderId= car.OrderId
+      
+
+      console.log()
+    },
     setCars(state, cars){
       state.cars = cars
     },
@@ -55,13 +77,40 @@ export default new Vuex.Store({
 
   actions: {
     fetchCars({commit, state}){
-      fetch('http://127.0.0.1:8500/admin/cars/all', { method: 'get', headers: { 'Authorization': state.token } })
+      fetch('http://127.0.0.1:8500/admin/cars/all', { method: 'GET', headers: {'Content-Type': 'application/json',
+      //  'Authorization': state.token 
+      }})
         .then( obj => obj.json() )
-        .then( res => commit('setCars', res.cars));
+        .then( res => commit('setCars', res));
 
     },
+    fetchCarByID({ commit }, id){
+      fetch(`http://127.0.0.1:8500/admin/cars/${id}`,{
+        headers: {
+          'authorization': `Bearer ${localStorage.token}`
+        },
+        method: 'GET'
+      })
+          .then( obj => obj.json() )
+          .then( res => commit('setSelectedCar', res) );
+    },
+    addCar({ commit }, obj){
+      fetch('http://127.0.0.1:8500/admin/cars/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json' ,
+          'authorization': `Bearer ${localStorage.token}`
+        },
+        body: JSON.stringify(obj)
+      }).then( res => res.json() )
+          .then( el => {
+            if (el.msg) {
+              alert(el.msg, 'oerr');
+            }
+          });
+  },
     register({ commit }, obj) {
-      fetch('/http://127.0.0.1:9000/api_register', {
+      fetch('http://127.0.0.1:9000/api_register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)

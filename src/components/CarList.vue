@@ -4,17 +4,18 @@
       v-model="currentPage"
       :total-rows="cars.length"
       :per-page="perPage"
-      aria-controls="cars-table"
+      aria-controls="image-table"
     ></b-pagination>
     <b-table
-      id="cars-table"
+      id="image-table"
       hover
       fixed
-      :items="items"
+      :items="cars"
       :fields="fields"
       small
       :per-page="perPage"
       :current-page="currentPage"
+      @row-clicked="rowClicked"
       
     >
       <template #cell(isHighlight)="data">
@@ -26,9 +27,37 @@
       v-model="currentPage"
       :total-rows="cars.length"
       :per-page="perPage"
-      aria-controls="cars-table"
+      aria-controls="image-table"
     ></b-pagination>
+    <b-button v-if="token" v-on:click="goToAddCar()">Create listing</b-button>
   </div>
+  <!-- <div>
+    <div class="center " v-for="car in cars"
+         :key="car.id"
+          >
+      <b-card no-body class="overflow-hidden " style="max-width: 540px; height: 350px">
+        <b-row no-gutters>
+          <a :href="`/car/${car.id}`" class="stretched-link"></a>
+          <b-col md="6">
+            <b-card-body :title="car.brand">
+              <b-card-text>
+                {{ car.model }}
+              </b-card-text>
+              <b-card-text>
+                {{ car.price }} price
+              </b-card-text>
+            </b-card-body>
+          </b-col>
+        </b-row>
+      </b-card>
+
+      <div v-if="token">
+        <b-button @click="addToCart(product)">Add to cart</b-button>
+      </div>
+      
+      <br>
+    </div>
+  </div> -->
 </template>
 
 <script>
@@ -41,7 +70,7 @@
     data() {
       return {
         fields: ['id', 'sellerId', 'model', 'brand', 'year', 'price',{ key: 'id', tdClass: 'align-middle' }],
-        items: [],
+        // cars: [],
         currentPage: 1,
         perPage: 10
       }
@@ -49,8 +78,15 @@
 
     computed: {
       ...mapState([
-        'cars'
-      ])
+        'cars',
+        'token'
+      ]),
+      filteredCars: function (){
+        let sb = []
+        console.log()
+        return this.cars.filter(book => book.SellerId == this.$route.params.id);
+
+      }
     },
 
     watch: {
@@ -70,21 +106,35 @@
       }
     },
 
-    mounted() {
-      this.cars.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
-        this.getItem(id).then( obj => this.items.push(obj) );
-      });
-    },
+    // mounted() {
+    //   this.cars.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
+    //     this.getItem(id).then( obj => this.items.push(obj) );
+    //   });
+    // },
 
     methods: {
       ...mapActions([
-        'getItem'
+        // 'getItem'
+        'fetchCars'
       ]),
+
+      rowClicked(record, index) {
+        this.$router.push({ name: 'SingleCarView', params: { id: record.id} });
+      },
+      goToAddCar(){
+        this.$router.push({ name: 'AddCar', params: { id: this.$route.params.id} });
+      }
 
     //   rowClicked(record, index) {
     //     this.$router.push({ name: 'Single', params: { id: record.objectID } });
     //   }
-    }
+    },
+    mounted() {
+        this.fetchCars();     
+        this.cars.slice(this.currentPage * this.perPage, (this.currentPage + 1) * this.perPage).map( id => {
+        this.getItem(id).then( obj => this.items.push(obj) );
+      });
+    },
   }
 
 </script>

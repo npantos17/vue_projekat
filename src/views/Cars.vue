@@ -8,7 +8,7 @@
 <script>
   import Header from '@/components/Header.vue';
   import CarList from '@/components/CarList.vue';
-  import { mapActions } from 'vuex';
+  import { mapActions, mapState } from 'vuex';
 
   export default {
     name: 'Cars',
@@ -24,7 +24,11 @@
         }
     },
 
-    
+    computed: {
+      ...mapState([
+        'cars'
+      ])
+    },
 
     // watch: {
     //   $route() {
