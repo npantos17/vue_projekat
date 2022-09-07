@@ -16,7 +16,7 @@
           <p>Year: {{car.year}}</p>
         </b-card-text> -->
         <b-button v-on:click="goToEdit()" pill>Update</b-button>
-        <b-button v-on:click="deleteSeller" pill>Delete</b-button>
+        <!-- <b-button v-on:click="deleteSeller" pill>Delete</b-button> -->
       </b-card>
     </div>
   </div>
@@ -53,17 +53,17 @@ export default {
     goToEdit(record, index) {
 
       
-        this.setSellerInfo({
-          id: this.car.id,
-          SellerId: this.car.SellerId,
-          brand: this.car.brand,
-          model: this.car.model,
-          year: this.car.year,
-          price: this.car.price,
-          OrderId: this.car.OrderId
+        // this.setSellerInfo({
+        //   id: this.car.id,
+        //   SellerId: this.car.SellerId,
+        //   brand: this.car.brand,
+        //   model: this.car.model,
+        //   year: this.car.year,
+        //   price: this.car.price,
+        //   OrderId: this.car.OrderId
           
-        })
-        this.$router.push({ name: 'UpdateCar'});
+        // })
+        this.$router.push({ name: 'UpdateSeller', params: { id: this.$route.params.id}});
       
       
     },

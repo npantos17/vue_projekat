@@ -12,7 +12,7 @@
         <h4>Email: {{user.email}}</h4>
     
         <b-button v-on:click="goToEdit()" pill>Update</b-button>
-        <b-button v-on:click="deleteUser" pill>Delete</b-button>
+        <!-- <b-button v-on:click="deleteUser" pill>Delete</b-button> -->
       </b-card>
     </div>
   </div>

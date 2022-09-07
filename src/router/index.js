@@ -9,9 +9,12 @@ import SingleSellerView from '@/views/SingleSellerView';
 import SingleUserView from '@/views/SingleUserView';
 import AddCar from '@/views/AddCar';
 import AddSeller from '@/views/AddSeller';
+import AddUser from '@/views/AddUser';
 import UpdateCar from '@/views/UpdateCar';
+import UpdateSeller from '@/views/UpdateSeller';
 import Users from '@/views/Users';
 import Sellers from '@/views/Sellers';
+import Orders from '@/views/Orders';
 
 
 Vue.use(VueRouter)
@@ -26,6 +29,11 @@ const routes = [
     path: '/cars',
     name: 'Cars',
     component: Cars
+  },
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: Orders
   },
   {
     path: '/about',
@@ -71,9 +79,19 @@ const routes = [
     component: AddSeller
   },
   {
+    path: '/addUser/', 
+    name: 'AddUser',
+    component: AddUser
+  },
+  {
     path: '/updateCar',
     name: 'UpdateCar',
     component: UpdateCar
+  },
+  {
+    path: '/updateSeller/:id',
+    name: 'UpdateSeller',
+    component: UpdateSeller
   },
   {
     path: '/users',

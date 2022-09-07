@@ -15,7 +15,7 @@
           <p>Year: {{car.year}}</p>
         </b-card-text>
         <b-button v-on:click="goToEdit()" pill>Update</b-button>
-        <b-button v-on:click="deleteCar" pill>Delete</b-button>
+        <!-- <b-button v-on:click="deleteCar" pill>Delete</b-button> -->
       </b-card>
     </div>
   </div>

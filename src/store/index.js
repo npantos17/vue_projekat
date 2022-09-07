@@ -10,7 +10,7 @@ export default new Vuex.Store({
     sellers: [],
     seller: null,
     orders: [],
-    orders: null,
+    order: null,
     users:[],
     user: null,
     token: '',
@@ -70,6 +70,9 @@ export default new Vuex.Store({
 
     setOrders(state, orders) {
       state.orders = orders;
+    },
+    setOrder(state, order){
+      state.order = order
     },
     setSelectedCar(state, car){
       state.car = car;
@@ -182,8 +185,23 @@ addUser({ commit }, obj){
           }
         });
   },
-  updateSeller({ commit }, obj){
-    fetch(`http://127.0.0.1:8500/admin/sellers/${obj.id}`, {
+  updateSeller({ commit }, obj, id){
+    fetch(`http://127.0.0.1:8500/admin/sellers/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json' ,
+        'authorization': `Bearer ${localStorage.token}`
+      },
+      body: JSON.stringify(obj)
+    }).then( res => res.json() )
+        .then( el => {
+          if (el.msg) {
+            alert(el.msg, 'ovo je error msg');
+          }
+        });
+  },
+  updateOrder({ commit }, obj){
+    fetch(`http://127.0.0.1:8500/admin/orders/${obj.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json' ,
@@ -211,6 +229,7 @@ addUser({ commit }, obj){
             alert(el.msg, 'ovo je error msg');
           }
         });
+        this.$router.push({ name: 'Cars', params: { id: this.$route.params.id} });
   },
   deleteSeller({ commit }, id){
     fetch(`http://127.0.0.1:8500/admin/sellers/${id}`, {
@@ -240,7 +259,22 @@ addUser({ commit }, obj){
             alert(el.msg, 'ovo je error msg');
           }
         });
-        window.location.reload
+        this.$router.push({ name: 'Users'});
+  },
+  deleteOrder({ commit }, id){
+    fetch(`http://127.0.0.1:8500/admin/orders/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json' ,
+        'authorization': `Bearer ${localStorage.token}`
+      }
+    }).then( res => res.json() )
+        .then( el => {
+          if (el.msg) {
+            alert(el.msg, 'ovo je error msg');
+          }
+        });
+        // this.$router.push({ name: 'Users'});
   },
   fetchSellers({commit, state}){
     fetch('http://127.0.0.1:8500/admin/sellers/all', { method: 'GET', headers: {'Content-Type': 'application/json',
@@ -256,6 +290,14 @@ addUser({ commit }, obj){
     }})
       .then( obj => obj.json() )
       .then( res => commit('setUsers', res));
+
+  },
+  fetchOrders({commit, state}){
+    fetch('http://127.0.0.1:8500/admin/orders/all', { method: 'GET', headers: {'Content-Type': 'application/json',
+      'Authorization': state.token 
+    }})
+      .then( obj => obj.json() )
+      .then( res => commit('setOrders', res));
 
   },
     register({ commit }, obj) {

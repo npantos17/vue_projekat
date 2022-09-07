@@ -34,6 +34,7 @@
       :per-page="perPage"
       aria-controls="image-table"
     ></b-pagination>
+    <b-button v-if="token" v-on:click="goToAddUser()">Add user</b-button>
   </div>
 </template>
 
@@ -58,6 +59,7 @@
     computed: {
       ...mapState([
         'users',
+        'token'
         
       ])
     },
@@ -70,6 +72,9 @@
       ]),
       rowClicked(record, index) {
         this.$router.push({ name: 'SingleUserView', params: { id: record.id} });
+      },
+       goToAddUser(){
+        this.$router.push({ name: 'AddUser', params: { id: this.$route.params.id} });
       }
 
     },

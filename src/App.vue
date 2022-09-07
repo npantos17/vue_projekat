@@ -22,6 +22,7 @@
           <b-navbar-nav>
             <b-nav-item to="/cars">Cars</b-nav-item>
             <b-nav-item to="/sellers">Sellers</b-nav-item>
+            <b-nav-item to="/orders">Orders</b-nav-item>
             <b-nav-item v-if="token" to="/users">Users</b-nav-item>
           </b-navbar-nav> 
           <b-navbar-nav class="ml-auto">
