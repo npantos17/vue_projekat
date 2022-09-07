@@ -12,6 +12,7 @@ export default new Vuex.Store({
     orders: [],
     orders: null,
     users:[],
+    user: null,
     token: '',
     loggedUserId: '',
     carInfo: {
@@ -75,6 +76,9 @@ export default new Vuex.Store({
     },
     setSeller(state, seller){
       state.seller = seller
+    },
+    setUser(state, user){
+      state.user = user
     }
 
   },
@@ -108,6 +112,16 @@ export default new Vuex.Store({
           .then( obj => obj.json() )
           .then( res => commit('setSeller', res) );
     },
+    fetchUserByID({ commit }, id){
+      fetch(`http://127.0.0.1:8500/admin/users/${id}`,{
+        headers: {
+          'authorization': `Bearer ${localStorage.token}`
+        },
+        method: 'GET'
+      })
+          .then( obj => obj.json() )
+          .then( res => commit('setUser', res) );
+    },
     addCar({ commit }, obj){
       fetch('http://127.0.0.1:8500/admin/cars/', {
         method: 'POST',
@@ -123,6 +137,36 @@ export default new Vuex.Store({
             }
           });
   },
+  addSeller({ commit }, obj){
+    fetch('http://127.0.0.1:8500/admin/sellers/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' ,
+        'authorization': `Bearer ${localStorage.token}`
+      },
+      body: JSON.stringify(obj)
+    }).then( res => res.json() )
+        .then( el => {
+          if (el.msg) {
+            alert(el.msg, 'oerr');
+          }
+        });
+},
+addUser({ commit }, obj){
+  fetch('http://127.0.0.1:8500/admin/users/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json' ,
+      'authorization': `Bearer ${localStorage.token}`
+    },
+    body: JSON.stringify(obj)
+  }).then( res => res.json() )
+      .then( el => {
+        if (el.msg) {
+          alert(el.msg, 'oerr');
+        }
+      });
+},
   updateCar({ commit }, obj){
     fetch(`http://127.0.0.1:8500/admin/cars/${obj.id}`, {
       method: 'PUT',
@@ -138,9 +182,9 @@ export default new Vuex.Store({
           }
         });
   },
-  deleteCar({ commit }, obj){
-    fetch(`http://127.0.0.1:8500/admin/cars/${obj.id}`, {
-      method: 'DELETE',
+  updateSeller({ commit }, obj){
+    fetch(`http://127.0.0.1:8500/admin/sellers/${obj.id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json' ,
         'authorization': `Bearer ${localStorage.token}`
@@ -153,8 +197,38 @@ export default new Vuex.Store({
           }
         });
   },
+  deleteCar({ commit }, id){
+    fetch(`http://127.0.0.1:8500/admin/cars/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json' ,
+        'authorization': `Bearer ${localStorage.token}`
+      },
+      
+    }).then( res => res.json() )
+        .then( el => {
+          if (el.msg) {
+            alert(el.msg, 'ovo je error msg');
+          }
+        });
+  },
   deleteSeller({ commit }, id){
     fetch(`http://127.0.0.1:8500/admin/sellers/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json' ,
+        'authorization': `Bearer ${localStorage.token}`
+      }
+    }).then( res => res.json() )
+        .then( el => {
+          if (el.msg) {
+            alert(el.msg, 'ovo je error msg');
+          }
+        });
+        window.location.reload
+  },
+  deleteUser({ commit }, id){
+    fetch(`http://127.0.0.1:8500/admin/users/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json' ,
@@ -212,7 +286,9 @@ export default new Vuex.Store({
           alert(tkn.msg);
         } else {
           commit('setToken', tkn.token)
-          commit('setLoggedUserId', tkn.userId)
+          commit('setLoggedUserId', tkn.id)
+          
+          // console.log(this.state.loggedUserId)
         }
       });
     },

@@ -19,7 +19,7 @@
       
     >
       <template v-slot:cell(delete)="data">
-					<span><b-btn class="btn-danger" @click="deleteSeller(data.item.id)">Delete</b-btn></span>
+					<span><b-btn class="btn-danger" @click="deleteCar(data.item.id)">Delete</b-btn></span>
 				</template>
     </b-table>
     <b-pagination

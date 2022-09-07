@@ -2,21 +2,17 @@
   <div class="d-flex justify-content-center">
     <div class="row text-center">
       <b-card
-          :title="seller.name"
+          :title="user.name"
           
           tag="article"
           style="max-width: 300rem;"
           class="mb-2"
       >
-        <h4>{{seller.email}}</h4>
-        <h4>Adresa: {{seller.address}}</h4>
-        <h4>Rating: {{seller.rating}}</h4>
-        <!-- <b-card-text>
-          <p id="year">Creation date: {{car.createdAt}}</p>
-          <p>Year: {{car.year}}</p>
-        </b-card-text> -->
+        <h4>Admin: {{user.admin}}</h4>
+        <h4>Email: {{user.email}}</h4>
+    
         <b-button v-on:click="goToEdit()" pill>Update</b-button>
-        <b-button v-on:click="deleteSeller" pill>Delete</b-button>
+        <b-button v-on:click="deleteUser" pill>Delete</b-button>
       </b-card>
     </div>
   </div>
@@ -27,11 +23,11 @@
 import {mapActions, mapState, mapMutations} from "vuex";
 
 export default {
-  name: "SingleSeller",
+  name: "SingleUser",
 
 
   props: {
-    seller: Object
+    user: Object
   },
 
   computed: {
@@ -48,6 +44,7 @@ export default {
         
     ]),
     ...mapActions([
+        'deleteUser'
          
        ]),
     goToEdit(record, index) {

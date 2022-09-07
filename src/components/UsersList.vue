@@ -17,7 +17,12 @@
       :per-page="perPage"
       :current-page="currentPage"
       @row-clicked="rowClicked"
+
     >
+
+    <template v-slot:cell(delete)="data">
+					<span><b-btn class="btn-danger" @click="deleteUser(data.item.id)">Delete</b-btn></span>
+				</template>
       <!-- <template #cell(isHighlight)="data">
         <b-icon v-if="data.value" icon="check-square" variant="success" scale="2"></b-icon>
         <b-icon v-else icon="x-circle" variant="danger" scale="2"></b-icon>
@@ -41,7 +46,7 @@
 
     data() {
       return {
-        fields: ['id', 'name',  'admin', 'email', { key: 'id', tdClass: 'align-middle' }],
+        fields: ['id', 'name',  'admin', 'email', 'delete', { key: 'id', tdClass: 'align-middle' }],
         items: [],
         currentPage: 1,
         perPage: 10
@@ -60,10 +65,11 @@
     methods: {
         ...mapActions([
         // 'getItem'
-        'fetchUsers'
+        'fetchUsers',
+        'deleteUser'
       ]),
       rowClicked(record, index) {
-        // this.$router.push({ name: 'SingleFaculty', params: { id: record.id} });
+        this.$router.push({ name: 'SingleUserView', params: { id: record.id} });
       }
 
     },
